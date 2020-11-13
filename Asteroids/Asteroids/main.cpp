@@ -1,8 +1,9 @@
-
 #include <iostream>
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+
+#include "Bullet.h"
 
 using namespace sf;
 using namespace std;
@@ -21,6 +22,7 @@ int main()
     window.setKeyRepeatEnabled(false);
 
     ConvexShape spaceship;
+    spaceship.setOrigin(spaceship.getScale().x / 2, spaceship.getScale().y / 2);
     spaceship.setPointCount(3);
     spaceship.setPoint(0, Vector2f(10.0f, 15.0f));
     spaceship.setPoint(1, Vector2f(-10.0f, 15.0f));
@@ -31,8 +33,11 @@ int main()
 
     spaceship.setPosition(Vector2f(WindowWidth * 0.5f, WindowHeight * 0.5f));
 
+    Vector2f bulletpos = Vector2f(spaceship.getPosition().x + 10.f, spaceship.getPosition().y + 15.f);
+
+    vector<Bullet> bullets;
+
     Clock rootClock;
-    Clock fireClock;
 
     float turnFactor = 0.0f;
     bool forward = false;
@@ -130,7 +135,17 @@ int main()
         // Fire
         if (fire == true && elapsedTimeSinceLastFire >= FireRate)
         {
-            cout << fire;
+            Transform orientation;
+            orientation.rotate(spaceship.getRotation());
+
+            Vector2f forwardDirection(0.0f, -1.0f);
+            forwardDirection = orientation * forwardDirection;
+
+            Vector2f position = spaceship.getPosition() + orientation * Vector2f(0.f, -15.f) + Vector2f(0.f, -5.f);
+
+            Bullet bullet(position, forwardDirection, 50.f);
+            bullets.push_back(bullet);
+
             elapsedTimeSinceLastFire = 0.0f;
         }
 
@@ -154,10 +169,23 @@ int main()
         }
         spaceship.setPosition(position);
 
+        // Move all bullets
+        for (int i = 0; i < bullets.size(); i++)
+        {
+            bullets[i].Move(deltaTime);
+        }
+
         // ===== Render =====
         window.clear(Color::Black);
 
         window.draw(spaceship);
+
+        for (int i = 0; i < bullets.size(); i++)
+        {
+            bullets[i].Draw(window);
+        }
+
+        
 
         window.display();
     }
