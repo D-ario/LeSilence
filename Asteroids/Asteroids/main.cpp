@@ -5,6 +5,7 @@
 
 #include "Bullet.h"
 #include "SpaceShip.h"
+#include "Asteroid.h"
 
 using namespace sf;
 using namespace std;
@@ -14,11 +15,26 @@ constexpr unsigned int WindowHeight = 720;
 
 int main()
 {
+    srand(time(0));
+
     RenderWindow window(VideoMode(WindowWidth, WindowHeight), "Asteroids");
     window.setKeyRepeatEnabled(false);
 
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
+    vector<Asteroid> asteroids;
+
+    // Asteroid TEST
+    for (int i = 1; i < 3; ++i)
+    {
+        for (int j = 1; j < 9; ++j)
+        {
+            Asteroid asteroid(Vector2f(j * 50, i * 60));
+
+            asteroids.push_back(asteroid);
+        }
+    }
+    //
 
     Clock rootClock;
 
@@ -42,6 +58,11 @@ int main()
         // ===== Update =====
         spaceship.Update(deltaTime, bullets);
 
+        for (int i = 0; i < asteroids.size(); i++)
+        {
+            asteroids[i].Update(deltaTime);
+        }
+
         // Move all bullets
         for (int i = 0; i < bullets.size(); i++)
         {
@@ -50,8 +71,13 @@ int main()
 
         // ===== Render =====
         window.clear(Color::Black);
-
+        
         spaceship.Draw(window);
+
+        for (int i = 0; i < asteroids.size(); i++)
+        {
+            asteroids[i].Draw(window);
+        }
 
         for (int i = 0; i < bullets.size(); i++)
         {
