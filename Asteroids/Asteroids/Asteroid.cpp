@@ -64,28 +64,26 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
     Vector2f position = asteroidShape.getPosition();
     position += velocity * deltatime;
 
-    if (position.x <= 0.0f)
+    FloatRect asteroidShapeBounds = asteroidShape.getGlobalBounds();
+
+    if (velocity.x < 0 && asteroidShapeBounds.left < 0.0f)
     {
         velocity.x = -velocity.x;
-        position.x = 0.f;
     }
-    else if (position.x + 20 >= 1280)
+    else if (velocity.x > 0 && asteroidShapeBounds.left + asteroidShapeBounds.width > 1280)
     {
         velocity.x = -velocity.x;
-        position.x = 1280 - 20;
     }
 
-    if (position.y <= 0.f)
+    if (velocity.y < 0 && asteroidShapeBounds.top < 0.0f)
     {
         velocity.y = -velocity.y;
-        position.y = 0.f;
     }
-    else if (position.y + 20 >= 720)
+    else if (velocity.y > 0 && asteroidShapeBounds.top + asteroidShapeBounds.height > 720)
     {
         velocity.y = -velocity.y;
-        position.y = 720 - 20;
     }
-    FloatRect asteroidShapeBounds = asteroidShape.getGlobalBounds();
+
     asteroidShapeBounds.top += asteroidShapeBounds.height * 0.25f;
     asteroidShapeBounds.height *= 0.5f;
     asteroidShapeBounds.left += asteroidShapeBounds.width * 0.25f;
