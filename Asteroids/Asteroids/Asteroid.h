@@ -8,7 +8,7 @@ class Asteroid
 {
 	public:
 
-		Asteroid(sf::Vector2f position);
+		Asteroid(sf::Vector2f position, float size);
 
 		void Update(float deltatime);
 		void Draw(sf::RenderWindow& renderWindow);

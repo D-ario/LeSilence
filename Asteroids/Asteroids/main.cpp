@@ -29,7 +29,7 @@ int main()
     {
         for (int j = 1; j < 9; ++j)
         {
-            Asteroid asteroid(Vector2f(j * 50, i * 60));
+            Asteroid asteroid(Vector2f(j * 150, i * 160), (rand() % 300 + 50) * 0.01f);
 
             asteroids.push_back(asteroid);
         }

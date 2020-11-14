@@ -2,19 +2,19 @@
 
 using namespace sf;
 
-Asteroid::Asteroid(sf::Vector2f position)
+Asteroid::Asteroid(sf::Vector2f position, float size)
 {
     asteroidShape.setPointCount(10);
-    asteroidShape.setPoint(0, Vector2f(0.0f, -15.0f));
-    asteroidShape.setPoint(1, RandomizePoint(Vector2f(6.0f, -10.0f)));
-    asteroidShape.setPoint(2, Vector2f(12.0f, -4.0f));
-    asteroidShape.setPoint(3, RandomizePoint(Vector2f(10.0f, 4.0f)));
-    asteroidShape.setPoint(4, Vector2f(8.0f, 12.0f));
-    asteroidShape.setPoint(5, RandomizePoint(Vector2f(0.0f, 12.0f)));
-    asteroidShape.setPoint(6, Vector2f(-8.0f, 12.0f));
-    asteroidShape.setPoint(7, RandomizePoint(Vector2f(-10.0f, 4.0f)));
-    asteroidShape.setPoint(8, Vector2f(-12.0f, -4.0f));
-    asteroidShape.setPoint(9, RandomizePoint(Vector2f(-6.0f, -10.0f)));
+    asteroidShape.setPoint(0, Vector2f(0.0f, -15.0f) * size);
+    asteroidShape.setPoint(1, RandomizePoint(Vector2f(6.0f, -10.0f)) * size);
+    asteroidShape.setPoint(2, Vector2f(12.0f, -4.0f) * size);
+    asteroidShape.setPoint(3, RandomizePoint(Vector2f(10.0f, 4.0f)) * size);
+    asteroidShape.setPoint(4, Vector2f(8.0f, 12.0f) * size);
+    asteroidShape.setPoint(5, RandomizePoint(Vector2f(0.0f, 12.0f)) * size);
+    asteroidShape.setPoint(6, Vector2f(-8.0f, 12.0f) * size);
+    asteroidShape.setPoint(7, RandomizePoint(Vector2f(-10.0f, 4.0f)) * size);
+    asteroidShape.setPoint(8, Vector2f(-12.0f, -4.0f) * size);
+    asteroidShape.setPoint(9, RandomizePoint(Vector2f(-6.0f, -10.0f)) * size);
     asteroidShape.setFillColor(Color::Black);
     asteroidShape.setOutlineColor(Color::White);
     asteroidShape.setOutlineThickness(2.0f);
