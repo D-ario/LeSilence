@@ -60,7 +60,7 @@ int main()
 
         for (int i = 0; i < asteroids.size(); i++)
         {
-            asteroids[i].Update(deltaTime);
+            asteroids[i].Update(deltaTime, asteroids);
         }
 
         // Move all bullets

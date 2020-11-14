@@ -10,7 +10,7 @@ class Asteroid
 
 		Asteroid(sf::Vector2f position, float size);
 
-		void Update(float deltatime);
+		void Update(float deltatime, const std::vector<Asteroid>& asteroids);
 		void Draw(sf::RenderWindow& renderWindow);
 
 	private:

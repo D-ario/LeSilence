@@ -57,7 +57,7 @@ Vector2f Asteroid::RandomizePoint(const Vector2f& point)
     return sf::Vector2f(point.x + randX, point.y + randY);
 }
 
-void Asteroid::Update(float deltatime)
+void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
 {
     asteroidShape.rotate(rotateSpeed * deltatime);
 
@@ -85,7 +85,49 @@ void Asteroid::Update(float deltatime)
         velocity.y = -velocity.y;
         position.y = 720 - 20;
     }
+    FloatRect asteroidShapeBounds = asteroidShape.getGlobalBounds();
+    asteroidShapeBounds.top += asteroidShapeBounds.height * 0.25f;
+    asteroidShapeBounds.height *= 0.5f;
+    asteroidShapeBounds.left += asteroidShapeBounds.width * 0.25f;
+    asteroidShapeBounds.width *= 0.5f;
 
+    for (size_t i = 0; i < asteroids.size(); i++)
+    {
+        const Asteroid& other = asteroids[i];
+
+        if (this == &other)
+        {
+            continue;
+        }
+
+        FloatRect otherBounds = other.asteroidShape.getGlobalBounds();
+        
+        otherBounds.top += otherBounds.height * 0.25f;
+        otherBounds.height *= 0.5f;
+        otherBounds.left += otherBounds.width * 0.25f;
+        otherBounds.width *= 0.5f;
+        
+
+        if (asteroidShapeBounds.intersects(otherBounds) == true)
+        {
+            if (velocity.x > 0 && asteroidShape.getPosition().x < other.asteroidShape.getPosition().x)
+            {
+                velocity.x = -velocity.x;
+            }
+            if (velocity.x < 0 && asteroidShape.getPosition().x > other.asteroidShape.getPosition().x)
+            {
+                velocity.x = -velocity.x;
+            }
+            if (velocity.y > 0 && asteroidShape.getPosition().y < other.asteroidShape.getPosition().y)
+            {
+                velocity.y = -velocity.y;
+            }
+            if (velocity.y < 0 && asteroidShape.getPosition().y > other.asteroidShape.getPosition().y)
+            {
+                velocity.y = -velocity.y;
+            }
+        }
+    }
     asteroidShape.setPosition(position);
 }
 
