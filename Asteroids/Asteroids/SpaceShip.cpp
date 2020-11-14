@@ -138,4 +138,35 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 void SpaceShip::Draw(sf::RenderWindow& renderWindow)
 {
     renderWindow.draw(shape);
+
+    FloatRect bounds = shape.getGlobalBounds();
+
+    if (bounds.top < 0)
+    {
+        Vector2f realPosition = shape.getPosition();
+        shape.setPosition(Vector2f(realPosition.x, 720 + realPosition.y));
+        renderWindow.draw(shape);
+        shape.setPosition(realPosition);
+    }
+    else if (bounds.top + bounds.height > 720)
+    {
+        Vector2f realPosition = shape.getPosition();
+        shape.setPosition(Vector2f(realPosition.x, realPosition.y - 720));
+        renderWindow.draw(shape);
+        shape.setPosition(realPosition);
+    }
+    if (bounds.left < 0)
+    {
+        Vector2f realPosition = shape.getPosition();
+        shape.setPosition(Vector2f(1280 + realPosition.x, realPosition.y));
+        renderWindow.draw(shape);
+        shape.setPosition(realPosition);
+    }
+    else if (bounds.left + bounds.width > 1280)
+    {
+        Vector2f realPosition = shape.getPosition();
+        shape.setPosition(Vector2f(realPosition.x - 1280, realPosition.y));
+        renderWindow.draw(shape);
+        shape.setPosition(realPosition);
+    }
 }
