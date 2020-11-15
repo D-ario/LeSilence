@@ -63,6 +63,9 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
 
     Vector2f position = asteroidShape.getPosition();
     position += velocity * deltatime;
+    asteroidShape.setPosition(position);
+
+    // Border Bounce
 
     FloatRect asteroidShapeBounds = asteroidShape.getGlobalBounds();
 
@@ -84,6 +87,8 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
         velocity.y = -velocity.y;
     }
 
+    // Bounce each other 
+
     asteroidShapeBounds.top += asteroidShapeBounds.height * 0.25f;
     asteroidShapeBounds.height *= 0.5f;
     asteroidShapeBounds.left += asteroidShapeBounds.width * 0.25f;
@@ -104,7 +109,6 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
         otherBounds.height *= 0.5f;
         otherBounds.left += otherBounds.width * 0.25f;
         otherBounds.width *= 0.5f;
-        
 
         if (asteroidShapeBounds.intersects(otherBounds) == true)
         {
@@ -126,7 +130,6 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
             }
         }
     }
-    asteroidShape.setPosition(position);
 }
 
 void Asteroid::Draw(sf::RenderWindow& renderWindow)

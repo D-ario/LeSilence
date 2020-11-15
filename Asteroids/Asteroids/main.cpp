@@ -6,6 +6,7 @@
 #include "Bullet.h"
 #include "SpaceShip.h"
 #include "Asteroid.h"
+#include "AsteroidsSpawner.h"
 
 using namespace sf;
 using namespace std;
@@ -23,6 +24,8 @@ int main()
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
     vector<Asteroid> asteroids;
+
+    AsteroidsSpawner asteroidsSpawner;
 
     // Asteroid TEST
     for (int i = 1; i < 3; ++i)
@@ -56,6 +59,9 @@ int main()
         }
 
         // ===== Update =====
+
+        asteroidsSpawner.Update(deltaTime, asteroids);
+
         spaceship.Update(deltaTime, bullets);
 
         for (int i = 0; i < asteroids.size(); i++)

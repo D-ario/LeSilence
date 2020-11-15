@@ -139,6 +139,8 @@ void SpaceShip::Draw(sf::RenderWindow& renderWindow)
 {
     renderWindow.draw(shape);
 
+    // Mirroring draw (border)
+
     FloatRect bounds = shape.getGlobalBounds();
 
     if (bounds.top < 0)
