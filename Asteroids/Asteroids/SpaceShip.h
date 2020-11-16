@@ -5,6 +5,7 @@
 #include <vector>
 
 class Bullet;
+class Asteroid;
 
 class SpaceShip
 {
@@ -14,6 +15,7 @@ class SpaceShip
 		void ProcessEvent(const sf::Event& event);
 		void Update(float deltatime, std::vector<Bullet>& bullets);
 		void Draw(sf::RenderWindow& renderWindow);
+		void Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& asteroids);
 
 	private:
 
@@ -21,6 +23,7 @@ class SpaceShip
 		float forwardSpeed = 0.2f;
 		float decelerationRate = 2.0f;
 		float fireRate = 1.0f / 5.0f;
+		bool invincibility = false;
 
 		sf::ConvexShape shape;
 

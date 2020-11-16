@@ -3,6 +3,9 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <vector>
+
+class Asteroid;
 
 class Bullet
 {
@@ -10,18 +13,17 @@ class Bullet
 		Bullet(sf::Vector2f _position, sf::Vector2f _direction, float _speed);
 		~Bullet();
 
-		sf::Vector2f velocity;
-
 		void Draw(sf::RenderWindow& window);
 		void Move(float& deltaTime);
+		void Collision(std::vector<Asteroid>& asteroids);
 
-	private:
-		
-		sf::Vector2f position;
+	public:
+		sf::Vector2f velocity;
 		sf::CircleShape circle;
 
-		
-		
+	private:
+		sf::Vector2f position;
+
 };
 
 #endif

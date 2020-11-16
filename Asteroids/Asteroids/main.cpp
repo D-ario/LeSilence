@@ -75,6 +75,8 @@ int main()
             bullets[i].Move(deltaTime);
         }
 
+        spaceship.Collision(bullets, asteroids);
+
         // ===== Render =====
         window.clear(Color::Black);
         

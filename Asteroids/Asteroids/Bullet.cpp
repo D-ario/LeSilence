@@ -1,4 +1,9 @@
 #include "Bullet.h"
+#include "Asteroid.h"
+
+#include <iostream>
+
+using namespace sf;
 
 Bullet::Bullet(sf::Vector2f _position, sf::Vector2f _direction, float _speed)
 {
@@ -47,4 +52,28 @@ void Bullet::Move(float& deltaTime)
 void Bullet::Draw(sf::RenderWindow& window)
 {
 	window.draw(circle);
+}
+
+void Bullet::Collision(std::vector<Asteroid>& asteroids)
+{
+    FloatRect shapeBounds = circle.getGlobalBounds();
+
+    for (size_t i = 0; i < asteroids.size(); i++)
+    {
+        Asteroid& other = asteroids[i];
+
+        FloatRect otherBounds = other.asteroidShape.getGlobalBounds();
+
+        otherBounds.top += otherBounds.height * 0.25f;
+        otherBounds.height *= 0.5f;
+        otherBounds.left += otherBounds.width * 0.25f;
+        otherBounds.width *= 0.5f;
+
+        if (shapeBounds.intersects(otherBounds))
+        {
+            asteroids.erase(asteroids.begin() + i);
+			delete this;
+            break;
+        }
+    }
 }

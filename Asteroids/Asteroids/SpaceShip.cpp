@@ -1,8 +1,8 @@
 #include "SpaceShip.h"
-
 #include "Bullet.h"
+#include "Asteroid.h"
 
-#include <SFML/Graphics.hpp>
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -106,9 +106,9 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
         Vector2f forwardDirection(0.0f, -1.0f);
         forwardDirection = orientation * forwardDirection;
 
-        Vector2f position = shape.getPosition() + orientation * Vector2f(0.f, -15.f) + Vector2f(0.f, -5.f);
+        Vector2f position = shape.getPosition() + orientation * Vector2f(0.f, -40.f);
 
-        Bullet bullet(position, forwardDirection, 50.f);
+        Bullet bullet(position, forwardDirection, 150.f);
         bullets.push_back(bullet);
 
         elapsedTimeSinceLastFire = 0.0f;
@@ -137,8 +137,6 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 
 void SpaceShip::Draw(sf::RenderWindow& renderWindow)
 {
-    
-
     // Mirroring draw (border)
 
     FloatRect bounds = shape.getGlobalBounds();
@@ -173,4 +171,49 @@ void SpaceShip::Draw(sf::RenderWindow& renderWindow)
     }
 
     renderWindow.draw(shape);
+}
+
+void SpaceShip::Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& asteroids)
+{
+    if (invincibility)
+        return;
+
+    FloatRect shapeBounds = shape.getGlobalBounds();
+
+    for (size_t i = 0; i < asteroids.size(); i++)
+    {
+        Asteroid& other = asteroids[i];
+
+        FloatRect otherBounds = other.asteroidShape.getGlobalBounds();
+
+        otherBounds.top += otherBounds.height * 0.25f;
+        otherBounds.height *= 0.5f;
+        otherBounds.left += otherBounds.width * 0.25f;
+        otherBounds.width *= 0.5f;
+
+        if (shapeBounds.intersects(otherBounds))
+        {
+            cout << "Colision Asteroid" << endl;
+            // Lose life
+            //invincibility = true;
+            asteroids.erase(asteroids.begin() + i);
+            break;
+        }
+    }
+
+    for (size_t i = 0; i < bullets.size(); i++)
+    {
+        Bullet& other = bullets[i];
+
+        FloatRect otherBounds = other.circle.getGlobalBounds();
+
+        if (shapeBounds.intersects(otherBounds))
+        {
+            cout << "Colision Bullet" << endl;
+            // Lose life
+            //invincibility = true;
+            bullets.erase(bullets.begin() + i);
+            break;
+        }
+    }
 }

@@ -13,13 +13,13 @@ class Asteroid
 		void Update(float deltatime, const std::vector<Asteroid>& asteroids);
 		void Draw(sf::RenderWindow& renderWindow);
 
+	public:
+		sf::ConvexShape asteroidShape;
+
 	private:
-
 		sf::Vector2f RandomizePoint(const sf::Vector2f& point);
-
 		sf::Vector2f velocity;
 		float rotateSpeed;
-		sf::ConvexShape asteroidShape;
 };
 
 #endif
