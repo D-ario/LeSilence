@@ -80,14 +80,14 @@ int main()
         
         spaceship.Draw(window);
 
-        for (int i = 0; i < asteroids.size(); i++)
-        {
-            asteroids[i].Draw(window);
-        }
-
         for (int i = 0; i < bullets.size(); i++)
         {
             bullets[i].Draw(window);
+        }
+
+        for (int i = 0; i < asteroids.size(); i++)
+        {
+            asteroids[i].Draw(window);
         }
 
         window.display();

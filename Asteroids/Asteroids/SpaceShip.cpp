@@ -137,7 +137,7 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 
 void SpaceShip::Draw(sf::RenderWindow& renderWindow)
 {
-    renderWindow.draw(shape);
+    
 
     // Mirroring draw (border)
 
@@ -171,4 +171,6 @@ void SpaceShip::Draw(sf::RenderWindow& renderWindow)
         renderWindow.draw(shape);
         shape.setPosition(realPosition);
     }
+
+    renderWindow.draw(shape);
 }
