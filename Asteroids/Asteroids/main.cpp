@@ -73,6 +73,11 @@ int main()
         for (int i = 0; i < bullets.size(); i++)
         {
             bullets[i].Move(deltaTime);
+            if (bullets[i].Collision(asteroids) == true)
+            {
+                bullets.erase(bullets.begin() + i);
+                --i;
+            }
         }
 
         spaceship.Collision(bullets, asteroids);

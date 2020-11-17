@@ -54,7 +54,7 @@ void Bullet::Draw(sf::RenderWindow& window)
 	window.draw(circle);
 }
 
-void Bullet::Collision(std::vector<Asteroid>& asteroids)
+bool Bullet::Collision(std::vector<Asteroid>& asteroids)
 {
     FloatRect shapeBounds = circle.getGlobalBounds();
 
@@ -72,8 +72,9 @@ void Bullet::Collision(std::vector<Asteroid>& asteroids)
         if (shapeBounds.intersects(otherBounds))
         {
             asteroids.erase(asteroids.begin() + i);
-			delete this;
-            break;
+			return true;
         }
     }
+
+	return false;
 }
