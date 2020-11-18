@@ -1,4 +1,5 @@
-#include <iostream>
+﻿#include <iostream>
+#include <sstream>
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -9,6 +10,7 @@
 #include "Asteroid.h"
 #include "AsteroidsSpawner.h"
 #include "ParticleSystem.h"
+
 
 using namespace sf;
 using namespace std;
@@ -42,6 +44,39 @@ int main()
 
     AsteroidsSpawner asteroidsSpawner;
 
+    // UI - Score
+    int currentScore = 0;
+    int numCleared = 0;
+
+    sf::Font myFont;
+    if (!myFont.loadFromFile("./font/StarJout.ttf")) {}
+
+    // texte "Score" 
+    sf::Text score;
+    score.setFont(myFont);
+    score.setFillColor(sf::Color::White);
+    score.setStyle(sf::Text::Regular);
+    score.setString("Score");
+    score.setCharacterSize(25);
+    score.setPosition(545, 5);
+
+    // Score
+    sf::Text scoreCurrent;
+    scoreCurrent.setFont(myFont);
+    scoreCurrent.setFillColor(sf::Color::White);
+    scoreCurrent.setStyle(sf::Text::Regular);
+    scoreCurrent.setString("0");
+    scoreCurrent.setCharacterSize(25);
+    scoreCurrent.setPosition(645, 5);
+
+    // zone d'�criture du score
+    sf::RectangleShape scoreRectangle;
+    scoreRectangle.setSize(sf::Vector2f(100, 30));
+    scoreRectangle.setOutlineThickness(1);
+    scoreRectangle.setOutlineColor(sf::Color::White);
+    scoreRectangle.setFillColor(sf::Color::Black);
+    scoreRectangle.setPosition(640, 5);
+
     // Asteroid TEST
     for (int i = 1; i < 3; ++i)
     {
@@ -74,7 +109,7 @@ int main()
             spaceship.ProcessEvent(event);
         }
 
-        // ===== Update =====
+        // ===== Update ===== //
 
         asteroidsSpawner.Update(deltaTime, asteroids);
 
@@ -113,9 +148,21 @@ int main()
 
         
 
-        // ===== Render =====
+        // ===== Render ===== //
         window.clear(Color::Black);
         
+        // Calculate score
+        currentScore = 5 * 100;
+
+        // Convert score to string
+        std::stringstream s;
+        s << currentScore;
+        scoreCurrent.setString(s.str());
+
+        window.draw(score);
+        window.draw(scoreRectangle);
+        window.draw(scoreCurrent);
+
         spaceship.Draw(window);
 
         for (int i = 0; i < bullets.size(); i++)
@@ -126,18 +173,6 @@ int main()
         for (int i = 0; i < asteroids.size(); i++)
         {
             asteroids[i].Draw(window);
-        }
-
-        for (int i = 0; i < particleSystems.size(); i++)
-        {
-            if (i == 0)
-            {
-                window.draw(particleSystems[i]);
-            }
-            else
-            {
-                window.draw(particleSystems[i]);
-            }
         }
 
         window.display();
