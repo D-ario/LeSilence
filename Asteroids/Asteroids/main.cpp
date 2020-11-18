@@ -39,7 +39,7 @@ int main()
     vector<Asteroid> asteroids;
     vector<ParticleSystem> particleSystems;
 
-    ParticleSystem playerParticles(1000, false);
+    ParticleSystem playerParticles(200, spaceship.shape.getPosition(), false);
     particleSystems.push_back(playerParticles);
 
     AsteroidsSpawner asteroidsSpawner;
@@ -126,6 +126,9 @@ int main()
             bullets[i].Move(deltaTime);
             if (bullets[i].Collision(asteroids) == true)
             {
+                ParticleSystem asteroidDestroyedParticles(200, bullets[i].circle.getPosition(), true);
+                particleSystems.push_back(asteroidDestroyedParticles);
+
                 bullets.erase(bullets.begin() + i);
                 --i;
             }
@@ -138,17 +141,21 @@ int main()
 
         /* Player particles*/
         sf::Vector2i position = sf::Vector2i(spaceship.shape.getPosition().x, spaceship.shape.getPosition().y);
-        particleSystems[0].setEmitter(window.mapPixelToCoords(position));
+        particleSystems[0].setEmitter(spaceship.shape.getPosition());
         particleSystems[0].update(elapsed, orientation);
 
         for (int i = 1; i < particleSystems.size(); i++)
         {
-            particleSystems[i].update(elapsed, orientation);
+            if (particleSystems[i].update(elapsed, orientation) == true)
+            {
+                particleSystems.erase(particleSystems.begin() + i);
+                i--;
+            }
         }
 
         
 
-        // ===== Render ===== //
+        // ===== Render =====
         window.clear(Color::Black);
         
         // Calculate score
@@ -173,6 +180,19 @@ int main()
         for (int i = 0; i < asteroids.size(); i++)
         {
             asteroids[i].Draw(window);
+        }
+
+        for (int i = 0; i < particleSystems.size(); i++)
+        {
+            if (i == 0)
+            {
+                //if (spaceship.forward)
+                window.draw(particleSystems[i]);
+            }
+            else
+            {
+                window.draw(particleSystems[i]);
+            }
         }
 
         window.display();

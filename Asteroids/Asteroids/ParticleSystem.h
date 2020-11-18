@@ -7,13 +7,19 @@ class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 public:
 
-    ParticleSystem(unsigned int count, bool asteroid) :
+    ParticleSystem(unsigned int count, sf::Vector2f emitter, bool asteroid) :
         m_particles(count),
         m_vertices(sf::Points, count),
         m_lifetime(sf::seconds(3.f)),
-        m_emitter(0.f, 0.f)
+        m_emitter(emitter)
     {
         this->asteroid = asteroid;
+
+        for (int i = 0; i < m_particles.size(); i++)
+        {
+            sf::Transform random;
+            resetParticle(i, random);
+        }
     }
 
     void setEmitter(sf::Vector2f position)
@@ -83,16 +89,25 @@ private:
         // give a random velocity and lifetime to the particle
         float angle;
         if (asteroid)
+        {
             angle = (std::rand() % 360) * 3.14f / 180.f;
+
+            float speed = (std::rand() % 50) + 50.f;
+            m_particles[index].velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
+            m_particles[index].lifetime = sf::milliseconds((std::rand() % 2000) + 1000);
+            m_vertices[index].position = m_emitter;
+        }
         else
-            angle = (std::rand() % 90 + 45)  * 3.14f / 180.f;
+        {
+            angle = (std::rand() % 90 + 45) * 3.14f / 180.f;
 
-        float speed = (std::rand() % 50) + 50.f;
-        m_particles[index].velocity = sf::Vector2f(/*std::cos(angle) **/ speed * forwardDirection.x, /*std::sin(angle) **/ speed * forwardDirection.y);
-        m_particles[index].lifetime = sf::milliseconds((std::rand() % 2000) + 1000);
+            float speed = (std::rand() % 50) + 50.f;
+            m_particles[index].velocity = sf::Vector2f(/*std::cos(angle) **/ speed * forwardDirection.x, /*std::sin(angle) **/ speed * forwardDirection.y);
+            m_particles[index].lifetime = sf::milliseconds((std::rand() % 2000) + 1000);
 
-        // reset the position of the corresponding vertex
-        m_vertices[index].position = m_emitter + transformPlayer * sf::Vector2f(0.f, 20.f);
+            // reset the position of the corresponding vertex
+            m_vertices[index].position = m_emitter + transformPlayer * sf::Vector2f(0.f, 20.f);
+        }
     }
 
     std::vector<Particle> m_particles;

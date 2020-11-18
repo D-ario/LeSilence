@@ -20,6 +20,7 @@ class SpaceShip
 
 	public:
 		sf::ConvexShape shape;
+		bool forward = false;
 
 	private:
 
@@ -29,9 +30,7 @@ class SpaceShip
 		float fireRate = 1.0f / 5.0f;
 		bool invincibility = false;
 
-
 		float turnFactor = 0.0f;
-		bool forward = false;
 		sf::Vector2f velocity;
 		bool fire = false;
 		float elapsedTimeSinceLastFire = 0.0f;
