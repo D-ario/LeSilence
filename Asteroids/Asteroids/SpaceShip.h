@@ -17,6 +17,10 @@ class SpaceShip
 		void Draw(sf::RenderWindow& renderWindow);
 		void Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& asteroids);
 
+
+	public:
+		sf::ConvexShape shape;
+
 	private:
 
 		float turnSpeed = 180.0f;
@@ -25,7 +29,6 @@ class SpaceShip
 		float fireRate = 1.0f / 5.0f;
 		bool invincibility = false;
 
-		sf::ConvexShape shape;
 
 		float turnFactor = 0.0f;
 		bool forward = false;

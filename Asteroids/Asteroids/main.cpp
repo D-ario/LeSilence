@@ -2,11 +2,13 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Bullet.h"
 #include "SpaceShip.h"
 #include "Asteroid.h"
 #include "AsteroidsSpawner.h"
+#include "ParticleSystem.h"
 
 using namespace sf;
 using namespace std;
@@ -20,6 +22,15 @@ int main()
 
     RenderWindow window(VideoMode(WindowWidth, WindowHeight), "Asteroids");
     window.setKeyRepeatEnabled(false);
+
+    sf::Music music;
+    // Open it from an audio file
+    if (!music.openFromFile("music.ogg"))
+    {
+        // error...
+    }
+
+    music.play();
 
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
@@ -41,9 +52,12 @@ int main()
 
     Clock rootClock;
 
+    ParticleSystem particles(1000, false);
+
     while (window.isOpen() == true)
     {
-        float deltaTime = rootClock.restart().asSeconds();
+        sf::Time elapsed = rootClock.restart();
+        float deltaTime = elapsed.asSeconds();
 
         // ===== Event =====
         Event event;
@@ -81,6 +95,9 @@ int main()
         }
 
         spaceship.Collision(bullets, asteroids);
+        sf::Vector2i position = sf::Vector2i(spaceship.shape.getPosition().x, spaceship.shape.getPosition().y);
+        particles.setEmitter(window.mapPixelToCoords(position));
+        particles.update(elapsed);
 
         // ===== Render =====
         window.clear(Color::Black);
@@ -96,6 +113,8 @@ int main()
         {
             asteroids[i].Draw(window);
         }
+
+        window.draw(particles);
 
         window.display();
     }
