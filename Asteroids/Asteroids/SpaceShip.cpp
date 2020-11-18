@@ -179,6 +179,10 @@ void SpaceShip::Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& a
         return;
 
     FloatRect shapeBounds = shape.getGlobalBounds();
+    shapeBounds.top += shapeBounds.height * 0.25f;
+    shapeBounds.height *= 0.5f;
+    shapeBounds.left += shapeBounds.width * 0.25f;
+    shapeBounds.width *= 0.5f;
 
     for (size_t i = 0; i < asteroids.size(); i++)
     {
