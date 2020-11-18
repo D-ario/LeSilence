@@ -35,6 +35,10 @@ int main()
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
     vector<Asteroid> asteroids;
+    vector<ParticleSystem> particleSystems;
+
+    ParticleSystem playerParticles(1000, false);
+    particleSystems.push_back(playerParticles);
 
     AsteroidsSpawner asteroidsSpawner;
 
@@ -51,8 +55,6 @@ int main()
     //
 
     Clock rootClock;
-
-    ParticleSystem particles(1000, false);
 
     while (window.isOpen() == true)
     {
@@ -95,9 +97,21 @@ int main()
         }
 
         spaceship.Collision(bullets, asteroids);
+
+        Transform orientation;
+        orientation.rotate(spaceship.shape.getRotation());
+
+        /* Player particles*/
         sf::Vector2i position = sf::Vector2i(spaceship.shape.getPosition().x, spaceship.shape.getPosition().y);
-        particles.setEmitter(window.mapPixelToCoords(position));
-        particles.update(elapsed);
+        particleSystems[0].setEmitter(window.mapPixelToCoords(position));
+        particleSystems[0].update(elapsed, orientation);
+
+        for (int i = 1; i < particleSystems.size(); i++)
+        {
+            particleSystems[i].update(elapsed, orientation);
+        }
+
+        
 
         // ===== Render =====
         window.clear(Color::Black);
@@ -114,7 +128,17 @@ int main()
             asteroids[i].Draw(window);
         }
 
-        window.draw(particles);
+        for (int i = 0; i < particleSystems.size(); i++)
+        {
+            if (i == 0)
+            {
+                window.draw(particleSystems[i]);
+            }
+            else
+            {
+                window.draw(particleSystems[i]);
+            }
+        }
 
         window.display();
     }
