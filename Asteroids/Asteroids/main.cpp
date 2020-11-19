@@ -39,7 +39,7 @@ int main()
     vector<Asteroid> asteroids;
     vector<ParticleSystem> particleSystems;
 
-    ParticleSystem playerParticles(200, spaceship.shape.getPosition(), false);
+    ParticleSystem playerParticles(400, spaceship.shape.getPosition(), false);
     particleSystems.push_back(playerParticles);
 
     AsteroidsSpawner asteroidsSpawner;
@@ -126,7 +126,7 @@ int main()
             bullets[i].Move(deltaTime);
             if (bullets[i].Collision(asteroids) == true)
             {
-                ParticleSystem asteroidDestroyedParticles(200, bullets[i].circle.getPosition(), true);
+                ParticleSystem asteroidDestroyedParticles(300, bullets[i].circle.getPosition(), true);
                 particleSystems.push_back(asteroidDestroyedParticles);
 
                 bullets.erase(bullets.begin() + i);
@@ -142,11 +142,12 @@ int main()
         /* Player particles*/
         sf::Vector2i position = sf::Vector2i(spaceship.shape.getPosition().x, spaceship.shape.getPosition().y);
         particleSystems[0].setEmitter(spaceship.shape.getPosition());
-        particleSystems[0].update(elapsed, orientation);
+        particleSystems[0].update(elapsed, orientation, spaceship.forward);
 
+        /* Asteroids particles */
         for (int i = 1; i < particleSystems.size(); i++)
         {
-            if (particleSystems[i].update(elapsed, orientation) == true)
+            if (particleSystems[i].update(elapsed) == true)
             {
                 particleSystems.erase(particleSystems.begin() + i);
                 i--;
