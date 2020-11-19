@@ -108,9 +108,9 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 
         Vector2f position = shape.getPosition() + orientation * Vector2f(0.f, -40.f);
 
-        Bullet bullet(position, forwardDirection, 200.f);
+        Bullet bullet(position, forwardDirection, 200.f + sqrt(velocity.x * velocity.x + velocity.y * velocity.y)); // 200 + Current speed
         bullets.push_back(bullet);
-
+         
         elapsedTimeSinceLastFire = 0.0f;
     }
 
