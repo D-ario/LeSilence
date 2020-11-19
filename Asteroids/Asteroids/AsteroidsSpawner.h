@@ -7,8 +7,26 @@ class Asteroid;
 
 class AsteroidsSpawner
 {
+private:
+	struct SpawnInfo
+	{
+		int asteroidCount;
+		float spawnDuration;
+	};
+
 public:
+
+	AsteroidsSpawner();
 	void Update(float deltaTime, std::vector<Asteroid>& asteroids);
+
+private:
+
+	static SpawnInfo dificultySpawnerAsteroids[];
+
+	int dificultyIndex = 0;
+	int asteroidSpawned = 0;
+	float nextSpawnTimeRemaining = 0.0f;
+	float totalTime;
 };
 
 #endif
