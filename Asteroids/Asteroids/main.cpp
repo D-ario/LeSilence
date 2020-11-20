@@ -10,6 +10,7 @@
 #include "Asteroid.h"
 #include "AsteroidsSpawner.h"
 #include "ParticleSystem.h"
+#include "Life.h"
 
 
 using namespace sf;
@@ -33,6 +34,10 @@ int main()
     }
 
     music.play();
+
+    LifePoint lifepoint(Vector2f(750.0f, 5.0f));
+    LifePoint2 lifepoint2(Vector2f(800.0f, 5.0f));
+    LifePoint3 lifepoint3(Vector2f(850.0f, 5.0f));
 
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
@@ -154,6 +159,10 @@ int main()
         window.draw(score);
         window.draw(scoreRectangle);
         window.draw(scoreCurrent);
+
+        lifepoint.Draw(window);
+        lifepoint2.Draw(window);
+        lifepoint3.Draw(window);
 
         spaceship.Draw(window);
 
