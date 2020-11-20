@@ -67,6 +67,19 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 {
     elapsedTimeSinceLastFire += deltatime;
 
+    if (invincibility)
+    {
+        if (tInvincibility > 0.f)
+        {
+            tInvincibility -= deltatime;
+        }
+        else
+        {
+            invincibility = false;
+            shape.setOutlineColor(sf::Color(255, 255, 255, 255));
+        }
+    }
+
     // Apply rotation (related to TurnFactor)
     if (turnFactor != 0.0f)
     {
@@ -197,9 +210,10 @@ void SpaceShip::Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& a
 
         if (shapeBounds.intersects(otherBounds))
         {
-            cout << "Colision Asteroid" << endl;
-            // Lose life
-            //invincibility = true;
+            life--;
+            invincibility = true;
+            tInvincibility = 1.5f;
+            shape.setOutlineColor(sf::Color(255, 255, 255, 125));
             asteroids.erase(asteroids.begin() + i);
             break;
         }
@@ -213,9 +227,10 @@ void SpaceShip::Collision(std::vector<Bullet>& bullets, std::vector<Asteroid>& a
 
         if (shapeBounds.intersects(otherBounds))
         {
-            cout << "Colision Bullet" << endl;
-            // Lose life
-            //invincibility = true;
+            life--;
+            invincibility = true;
+            tInvincibility = 1.5f;
+            shape.setOutlineColor(sf::Color(255, 255, 255, 125));
             bullets.erase(bullets.begin() + i);
             break;
         }

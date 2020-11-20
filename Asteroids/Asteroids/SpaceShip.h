@@ -30,6 +30,7 @@ class SpaceShip
 		float decelerationRate = 2.0f;
 		float fireRate = 1.0f / 5.0f;
 		bool invincibility = false;
+		float tInvincibility = 0.f;
 
 		float turnFactor = 0.0f;
 		sf::Vector2f velocity;
