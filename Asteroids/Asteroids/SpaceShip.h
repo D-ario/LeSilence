@@ -21,6 +21,7 @@ class SpaceShip
 	public:
 		sf::ConvexShape shape;
 		bool forward = false;
+		int life = 3;
 
 	private:
 

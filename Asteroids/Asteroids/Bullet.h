@@ -15,7 +15,7 @@ class Bullet
 
 		void Draw(sf::RenderWindow& window);
 		void Move(float& deltaTime);
-		bool Collision(std::vector<Asteroid>& asteroids);
+		bool Collision(std::vector<Asteroid>& asteroids, int& currentScore);
 
 	public:
 		sf::Vector2f velocity;

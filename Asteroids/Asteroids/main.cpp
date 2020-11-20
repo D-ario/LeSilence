@@ -112,7 +112,7 @@ int main()
         for (int i = 0; i < bullets.size(); i++)
         {
             bullets[i].Move(deltaTime);
-            if (bullets[i].Collision(asteroids) == true)
+            if (bullets[i].Collision(asteroids, currentScore) == true)
             {
                 ParticleSystem asteroidDestroyedParticles(300, bullets[i].circle.getPosition(), true);
                 particleSystems.push_back(asteroidDestroyedParticles);
@@ -142,13 +142,9 @@ int main()
             }
         }
 
-        
 
         // ===== Render =====
         window.clear(Color::Black);
-        
-        // Calculate score
-        currentScore = 5 * 100;
 
         // Convert score to string
         std::stringstream s;

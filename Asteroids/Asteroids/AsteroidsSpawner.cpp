@@ -62,7 +62,7 @@ void AsteroidsSpawner::Update(float deltaTime, vector<Asteroid>& asteroids)
 
 			while (asteroidSpawned < asteroidNeeded)
 			{
-				Asteroid asteroid(Vector2f(50000.0f, 50000.0f), (rand() % 300 + 50) * 0.01f);
+				Asteroid asteroid(Vector2f(50000.0f, 50000.0f), (rand() % 300 + 100) * 0.01f, 3);
 				FloatRect bounds = asteroid.asteroidShape.getGlobalBounds();
 
 				float x = 0;

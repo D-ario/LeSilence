@@ -1,9 +1,13 @@
 #include "Asteroid.h"
 
+#include <iostream>
+
 using namespace sf;
 
-Asteroid::Asteroid(sf::Vector2f position, float size)
+Asteroid::Asteroid(sf::Vector2f position, float size, int type)
 {
+    this->size = type;
+
     asteroidShape.setPointCount(10);
     asteroidShape.setPoint(0, Vector2f(0.0f, -15.0f) * size);
     asteroidShape.setPoint(1, RandomizePoint(Vector2f(6.0f, -10.0f)) * size);
@@ -34,7 +38,7 @@ Asteroid::Asteroid(sf::Vector2f position, float size)
     }
 
     velocity.y = rand() % 75;
-    if (rand() % 2 == 0)
+       if (rand() % 2 == 0)
     {
         velocity.y = -velocity.y;
     }
@@ -130,6 +134,22 @@ void Asteroid::Update(float deltatime, const std::vector<Asteroid>& asteroids)
             }
         }
     }
+}
+
+int Asteroid::Death(std::vector<Asteroid>& asteroids)
+{
+    if (size > 1)
+    {
+        float androidSize = (rand() % 200 + 50) * 0.01f;
+
+        Asteroid asteroid(asteroidShape.getPosition(), androidSize, 1);
+        asteroids.push_back(asteroid);
+
+        Asteroid asteroid2(asteroidShape.getPosition(), androidSize, 1);   
+        asteroids.push_back(asteroid2);
+    }
+
+    return 10;
 }
 
 void Asteroid::Draw(sf::RenderWindow& renderWindow)
