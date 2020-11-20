@@ -36,8 +36,8 @@ int main()
     music.play();
 
     LifePoint lifepoint(Vector2f(750.0f, 5.0f));
-    LifePoint2 lifepoint2(Vector2f(800.0f, 5.0f));
-    LifePoint3 lifepoint3(Vector2f(850.0f, 5.0f));
+    LifePoint lifepoint2(Vector2f(800.0f, 5.0f));
+    LifePoint lifepoint3(Vector2f(850.0f, 5.0f));
 
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
@@ -160,9 +160,25 @@ int main()
         window.draw(scoreRectangle);
         window.draw(scoreCurrent);
 
-        lifepoint.Draw(window);
-        lifepoint2.Draw(window);
-        lifepoint3.Draw(window);
+        if (spaceship.life == 3)
+        {
+            lifepoint.Draw(window);
+            lifepoint2.Draw(window);
+            lifepoint3.Draw(window);
+        }
+        else if (spaceship.life == 2)
+        {
+            lifepoint.Draw(window);
+            lifepoint2.Draw(window);
+        }
+        else if (spaceship.life == 1)
+        {
+            lifepoint.Draw(window);
+        }
+        else
+        {
+            window.close();
+        }
 
         spaceship.Draw(window);
 
