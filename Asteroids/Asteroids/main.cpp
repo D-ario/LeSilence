@@ -28,7 +28,7 @@ int main()
 
     sf::Music music;
     // Open it from an audio file
-    if (!music.openFromFile("music.ogg"))
+    if (!music.openFromFile("../../Assets/music.ogg"))
     {
         // error...
     }
@@ -54,7 +54,7 @@ int main()
     int numCleared = 0;
 
     sf::Font myFont;
-    if (!myFont.loadFromFile("./font/StarJout.ttf")) {}
+    if (!myFont.loadFromFile("../../Assets/font/StarJout.ttf")) {}
 
     // texte "Score" 
     sf::Text score;
