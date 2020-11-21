@@ -28,11 +28,9 @@ int main()
 
     sf::Music music;
     // Open it from an audio file
-    if (!music.openFromFile("../../Assets/music.ogg"))
-    {
-        // error...
-    }
-
+    music.openFromFile("../../Assets/song/track_01_lightin.ogg");
+    music.setVolume(20);
+    music.setLoop(true);
     music.play();
 
     LifePoint lifepoint(Vector2f(750.0f, 5.0f));
