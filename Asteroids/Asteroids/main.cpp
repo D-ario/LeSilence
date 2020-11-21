@@ -11,6 +11,8 @@
 #include "AsteroidsSpawner.h"
 #include "ParticleSystem.h"
 #include "Life.h"
+#include "Enemy.h"
+#include "EnemySpawner.h"
 
 
 using namespace sf;
@@ -40,12 +42,14 @@ int main()
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
     vector<Asteroid> asteroids;
+    vector<Enemy> enemies;
     vector<ParticleSystem> particleSystems;
 
     ParticleSystem playerParticles(400, spaceship.shape.getPosition(), false);
     particleSystems.push_back(playerParticles);
 
     AsteroidsSpawner asteroidsSpawner;
+    EnemySpawner enemySpawner;
 
     // UI - Score
     int currentScore = 0;
@@ -103,6 +107,7 @@ int main()
         // ===== Update ===== //
 
         asteroidsSpawner.Update(deltaTime, asteroids);
+        enemySpawner.Update(deltaTime, enemies);
 
         spaceship.Update(deltaTime, bullets);
 
@@ -111,6 +116,10 @@ int main()
             asteroids[i].Update(deltaTime, asteroids);
         }
 
+        for (int i = 0; i < enemies.size(); i++)
+        {
+            enemies[i].Update(deltaTime, spaceship);
+        }
         // Move all bullets
         for (int i = 0; i < bullets.size(); i++)
         {
@@ -190,6 +199,11 @@ int main()
             asteroids[i].Draw(window);
         }
 
+        for (int i = 0; i < enemies.size(); i++)
+        {
+            enemies[i].Draw(window);
+        }
+
         for (int i = 0; i < particleSystems.size(); i++)
         {
             if (i == 0)
@@ -202,9 +216,8 @@ int main()
                 window.draw(particleSystems[i]);
             }
         }
-
         window.display();
     }
 
-	return 0;
+    return 0;
 }

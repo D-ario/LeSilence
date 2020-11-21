@@ -1,7 +1,6 @@
 #include <iostream>
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
+#include "Enemy.h"
 
 using namespace sf;
 using namespace std;
@@ -9,43 +8,31 @@ constexpr float WindowWidth = 1280.0f;
 constexpr float WindowHeight = 720.0f;
 constexpr float ForwardSpeed = 0.2f;
 
-void Enemy()
+Enemy::Enemy(sf::Vector2f position)
 {
-	//pre def
-	Clock rootClock;
-	float deltaTime = rootClock.restart().asSeconds();
-	RenderWindow window(VideoMode(WindowWidth, WindowHeight), "Asteroids");
-
 	//def Enemy
-	ConvexShape enemy;
-	enemy.setPointCount(4);
-	enemy.setPoint(0, Vector2f(-10.f, -15.f));
-	enemy.setPoint(1, Vector2f(-10.f, 15.f));
-	enemy.setPoint(2, Vector2f(10.f, 15.f));
-	enemy.setPoint(3, Vector2f(10.f, -15.f));
-	enemy.setFillColor(Color::Red);
-	enemy.setOutlineColor(Color::Black);
+	enemyShape.setPointCount(3);
+	enemyShape.setPoint(0, Vector2f(10.0f, 15.0f));
+	enemyShape.setPoint(1, Vector2f(-10.0f, 15.0f));
+	enemyShape.setPoint(2, Vector2f(0.0f, -15.0f));
+	enemyShape.setFillColor(Color::Black);
+	enemyShape.setOutlineColor(Color::Red);
 
+	enemyShape.setOutlineThickness(2.0f);
 	//à redéfinir avec le EnemyManager
-	enemy.setPosition(Vector2f(WindowWidth * 2.f, WindowHeight * 2.f));
+	enemyShape.setPosition(position);
+}
 
+void Enemy::Update(float deltatime, const SpaceShip& spaceship)
+{
+	// TODO dot product to align orientation to spaceship
 
-	//def mouvement
-	bool moving = true;
-	Vector2f velocityEnemy;
+    Vector2f position = enemyShape.getPosition();
+    position += velocity * deltatime;
+    enemyShape.setPosition(position);
+}
 
-	if (moving == true)
-	{
-		Vector2f movingDirection(0.0f, -1.0f);
-
-		//apply velocity
-		velocityEnemy += movingDirection * ForwardSpeed * deltaTime;
-
-		//new position Enemy
-		Vector2f newPositionE = enemy.getPosition();
-		newPositionE += velocityEnemy;
-		enemy.setPosition(newPositionE);
-	}
-
-	if 
+void Enemy::Draw(sf::RenderWindow& renderWindow)
+{
+	renderWindow.draw(enemyShape);
 }
