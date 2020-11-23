@@ -22,6 +22,9 @@ public:
 
 private:
 	sf::Vector2f velocity;
+
+	float forwardSpeed = 0.2f;
+	float decelerationRate = 2.0f;
 };
 
 #endif
