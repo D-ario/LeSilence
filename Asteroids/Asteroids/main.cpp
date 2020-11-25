@@ -102,6 +102,25 @@ int main()
     waveCurrent.setCharacterSize(25);
     waveCurrent.setPosition(115, 5);
 
+    // texte "GameOver" 
+    sf::Text gameOver;
+    gameOver.setFont(myFont);
+    gameOver.setFillColor(sf::Color::White);
+    gameOver.setStyle(sf::Text::Regular);
+    gameOver.setString("Gameover");
+    gameOver.setCharacterSize(56);
+    FloatRect gameOverBounds = gameOver.getGlobalBounds();
+    gameOver.setPosition(1280 * 0.5f - gameOverBounds.width * 0.5f, 720.0f * 0.5f - gameOverBounds.height * 0.5f);
+
+    sf::Text retryText;
+    retryText.setFont(myFont);
+    retryText.setFillColor(sf::Color::White);
+    retryText.setStyle(sf::Text::Regular);
+    retryText.setString("Press 'Enter' to Retry, or 'Esc' to Quit");
+    retryText.setCharacterSize(32);
+    FloatRect retryTextBounds = retryText.getGlobalBounds();
+    retryText.setPosition(1280 * 0.5f - retryTextBounds.width * 0.5f, 720.0f * 0.5f + gameOverBounds.height + retryTextBounds.height);
+
     Clock rootClock;
 
     while (window.isOpen() == true)
@@ -113,6 +132,11 @@ int main()
             deltaTime = 0.2f;
         }
 
+        if (spaceship.life <= 0)
+        {
+            deltaTime = 0.0f;
+        }
+
         // ===== Event =====
         Event event;
         while (window.pollEvent(event) == true)
@@ -121,6 +145,25 @@ int main()
             {
                 window.close();
                 break;
+            }
+
+            if (spaceship.life <= 0)
+            {
+                if (event.type == Event::KeyReleased)
+                {
+                    if (event.key.code == Keyboard::Key::Return || event.key.code == Keyboard::Key::Enter) // Retry
+                    {
+                        spaceship.life = 3;
+                        spaceship.shape.setPosition(1280.0f * 0.5f, 720.0f * 0.5f);
+                        bullets.clear();
+                        asteroids.clear();
+                        enemies.clear();
+                    }
+                    else if (event.key.code == Keyboard::Key::Escape) // Quit
+                    {
+                        window.close();
+                    }
+                }
             }
 
             spaceship.ProcessEvent(event);
@@ -220,10 +263,6 @@ int main()
         {
             lifepoint.Draw(window);
         }
-        else
-        {
-            //window.close();
-        }
 
         spaceship.Draw(window);
 
@@ -254,6 +293,13 @@ int main()
                 window.draw(particleSystems[i]);
             }
         }
+
+        if (spaceship.life <= 0)
+        {
+            window.draw(gameOver);
+            window.draw(retryText);
+        }
+
         window.display();
     }
 

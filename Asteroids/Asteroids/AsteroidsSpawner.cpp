@@ -26,7 +26,7 @@ AsteroidsSpawner::SpawnInfo AsteroidsSpawner::dificultySpawnerAsteroids[] = {
 AsteroidsSpawner::AsteroidsSpawner()
 {
 	totalTime = 0;
-	dificultyIndex = 8;
+	dificultyIndex = 0;
 	asteroidSpawned = 0;
 
 	SpawnInfo spawnInfo = dificultySpawnerAsteroids[dificultyIndex];
