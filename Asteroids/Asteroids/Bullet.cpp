@@ -20,7 +20,7 @@ Bullet::~Bullet()
 {
 }
 
-void Bullet::Move(float& deltaTime)
+bool Bullet::Move(float& deltaTime)
 {
 	position += velocity * deltaTime;
 
@@ -28,25 +28,35 @@ void Bullet::Move(float& deltaTime)
 	{
 		velocity.x = -velocity.x;
 		position.x = 0.f;
+		countCollisionBullet++;
 	}
 	else if (position.x + circle.getRadius() >= 1280)
 	{
 		velocity.x = -velocity.x;
 		position.x = 1280 - circle.getRadius();
+		countCollisionBullet++;
 	}
 
 	if (position.y <= 0.f)
 	{
 		velocity.y = -velocity.y;
 		position.y = 0.f;
+		countCollisionBullet++;
 	}
 	else if (position.y + circle.getRadius() >= 720)
 	{
 		velocity.y = -velocity.y;
 		position.y = 720 - circle.getRadius();
+		countCollisionBullet++;
 	}
-
+	
 	circle.setPosition(position);
+
+	float alpha = 1.0f - ((float)countCollisionBullet / (float)maxCollisionBullet);
+
+	circle.setFillColor(Color(255, 255, 255, alpha * 255));
+
+	return (countCollisionBullet >= maxCollisionBullet);
 }
 
 void Bullet::Draw(sf::RenderWindow& window)

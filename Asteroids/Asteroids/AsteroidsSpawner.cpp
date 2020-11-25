@@ -26,7 +26,7 @@ AsteroidsSpawner::SpawnInfo AsteroidsSpawner::dificultySpawnerAsteroids[] = {
 AsteroidsSpawner::AsteroidsSpawner()
 {
 	totalTime = 0;
-	dificultyIndex = 0;
+	dificultyIndex = 8;
 	asteroidSpawned = 0;
 
 	SpawnInfo spawnInfo = dificultySpawnerAsteroids[dificultyIndex];
@@ -62,7 +62,7 @@ void AsteroidsSpawner::Update(float deltaTime, vector<Asteroid>& asteroids)
 
 			while (asteroidSpawned < asteroidNeeded)
 			{
-				Asteroid asteroid(Vector2f(50000.0f, 50000.0f), (rand() % 300 + 100) * 0.01f, 3);
+				Asteroid asteroid(Vector2f(50000.0f, 50000.0f), (rand() % 300 + 100) * 0.01f);
 				FloatRect bounds = asteroid.asteroidShape.getGlobalBounds();
 
 				float x = 0;
@@ -115,4 +115,9 @@ void AsteroidsSpawner::Update(float deltaTime, vector<Asteroid>& asteroids)
 		}
 		cout << "Prochain spawn dans " << nextSpawnTimeRemaining << " secondes" << endl;
 	}
+}
+
+int AsteroidsSpawner::GetDifficulty() const
+{
+	return dificultyIndex;
 }

@@ -26,7 +26,7 @@ EnemySpawner::SpawnInfo EnemySpawner::dificultySpawnerEnemies[] = {
 EnemySpawner::EnemySpawner()
 {
 	totalTime = 0;
-	dificultyIndex = 0;
+	dificultyIndex = 8;
 	enemiesSpawned = 0;
 
 	SpawnInfo spawnInfo = dificultySpawnerEnemies[dificultyIndex];

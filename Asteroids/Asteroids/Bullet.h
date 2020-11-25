@@ -14,7 +14,7 @@ class Bullet
 		~Bullet();
 
 		void Draw(sf::RenderWindow& window);
-		void Move(float& deltaTime);
+		bool Move(float& deltaTime);
 		bool Collision(std::vector<Asteroid>& asteroids, int& currentScore);
 
 	public:
@@ -23,6 +23,8 @@ class Bullet
 
 	private:
 		sf::Vector2f position;
+		short countCollisionBullet = 0;
+		static constexpr short maxCollisionBullet = 3;
 
 };
 

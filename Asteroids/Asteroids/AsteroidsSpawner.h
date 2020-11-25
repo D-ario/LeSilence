@@ -18,6 +18,7 @@ public:
 
 	AsteroidsSpawner();
 	void Update(float deltaTime, std::vector<Asteroid>& asteroids);
+	int GetDifficulty() const;
 
 private:
 

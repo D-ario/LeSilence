@@ -84,12 +84,34 @@ int main()
     scoreRectangle.setFillColor(sf::Color::Black);
     scoreRectangle.setPosition(640, 5);
 
+    // texte "Wave" 
+    sf::Text wave;
+    wave.setFont(myFont);
+    wave.setFillColor(sf::Color::White);
+    wave.setStyle(sf::Text::Regular);
+    wave.setString("Wave:");
+    wave.setCharacterSize(25);
+    wave.setPosition(10, 5);
+
+    // Wave
+    sf::Text waveCurrent;
+    waveCurrent.setFont(myFont);
+    waveCurrent.setFillColor(sf::Color::White);
+    waveCurrent.setStyle(sf::Text::Regular);
+    waveCurrent.setString("0");
+    waveCurrent.setCharacterSize(25);
+    waveCurrent.setPosition(115, 5);
+
     Clock rootClock;
 
     while (window.isOpen() == true)
     {
         sf::Time elapsed = rootClock.restart();
         float deltaTime = elapsed.asSeconds();
+        if (deltaTime > 0.2f) // Useful with breakpoint debugging
+        {
+            deltaTime = 0.2f;
+        }
 
         // ===== Event =====
         Event event;
@@ -108,6 +130,7 @@ int main()
 
         asteroidsSpawner.Update(deltaTime, asteroids);
         enemySpawner.Update(deltaTime, enemies);
+        waveCurrent.setString(to_string(asteroidsSpawner.GetDifficulty() + 1));
 
         spaceship.Update(deltaTime, bullets);
 
@@ -118,13 +141,17 @@ int main()
 
         for (int i = 0; i < enemies.size(); i++)
         {
-            enemies[i].Update(deltaTime, spaceship);
+            enemies[i].Update(deltaTime, spaceship, bullets);
         }
         // Move all bullets
         for (int i = 0; i < bullets.size(); i++)
         {
-            bullets[i].Move(deltaTime);
-            if (bullets[i].Collision(asteroids, currentScore) == true)
+            if (bullets[i].Move(deltaTime) == true)
+            {
+                bullets.erase(bullets.begin() + i);
+                --i;
+            }
+            else if (bullets[i].Collision(asteroids, currentScore) == true)
             {
                 ParticleSystem asteroidDestroyedParticles(300, bullets[i].circle.getPosition(), true);
                 particleSystems.push_back(asteroidDestroyedParticles);
@@ -135,6 +162,14 @@ int main()
         }
 
         spaceship.Collision(bullets, asteroids);
+        for (int i = 0; i < enemies.size(); i++)
+        {
+            if (enemies[i].Collision(bullets) == true)
+            {
+                enemies.erase(enemies.begin() + i);
+                --i;
+            }
+        }
 
         Transform orientation;
         orientation.rotate(spaceship.shape.getRotation());
@@ -163,6 +198,9 @@ int main()
         s << currentScore;
         scoreCurrent.setString(s.str());
 
+        window.draw(wave);
+        window.draw(waveCurrent);
+
         window.draw(score);
         window.draw(scoreRectangle);
         window.draw(scoreCurrent);
@@ -184,7 +222,7 @@ int main()
         }
         else
         {
-            window.close();
+            //window.close();
         }
 
         spaceship.Draw(window);

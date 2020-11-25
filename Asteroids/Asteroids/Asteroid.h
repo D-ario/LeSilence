@@ -8,7 +8,7 @@ class Asteroid
 {
 	public:
 
-		Asteroid(sf::Vector2f position, float size, int type);
+		Asteroid(sf::Vector2f position, float size);
 
 		void Update(float deltatime, const std::vector<Asteroid>& asteroids);
 		int Death(std::vector<Asteroid>& asteroids);
@@ -16,12 +16,12 @@ class Asteroid
 
 	public:
 		sf::ConvexShape asteroidShape;
-		int size;
 
 	private:
 		sf::Vector2f RandomizePoint(const sf::Vector2f& point);
 		sf::Vector2f velocity;
 		float rotateSpeed;
+		float size;
 };
 
 #endif

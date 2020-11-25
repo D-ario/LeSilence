@@ -26,7 +26,7 @@ class SpaceShip
 	private:
 
 		float turnSpeed = 180.0f;
-		float forwardSpeed = 0.2f;
+		float forwardSpeed = 450.0f;
 		float decelerationRate = 2.0f;
 		float fireRate = 1.0f / 5.0f;
 		bool invincibility = false;

@@ -108,7 +108,7 @@ void SpaceShip::Update(float deltatime, vector<Bullet>& bullets)
 
     // Modify the spaceship position related to the velocity
     Vector2f newPosition = shape.getPosition();
-    newPosition += velocity;
+    newPosition += velocity * deltatime;
     shape.setPosition(newPosition);
 
     // Fire
