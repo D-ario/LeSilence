@@ -13,6 +13,7 @@
 #include "Life.h"
 #include "Enemy.h"
 #include "EnemySpawner.h"
+#include "Gui.h"
 
 
 using namespace sf;
@@ -35,10 +36,6 @@ int main()
     music.setLoop(true);
     music.play();
 
-    LifePoint lifepoint(Vector2f(750.0f, 5.0f));
-    LifePoint lifepoint2(Vector2f(800.0f, 5.0f));
-    LifePoint lifepoint3(Vector2f(850.0f, 5.0f));
-
     SpaceShip spaceship(Vector2f(WindowWidth / 2, WindowHeight / 2));
     vector<Bullet> bullets;
     vector<Asteroid> asteroids;
@@ -51,75 +48,9 @@ int main()
     AsteroidsSpawner asteroidsSpawner;
     EnemySpawner enemySpawner;
 
-    // UI - Score
+    Gui gui;
+
     int currentScore = 0;
-    int numCleared = 0;
-
-    sf::Font myFont;
-    if (!myFont.loadFromFile("../../Assets/font/StarJout.ttf")) {}
-
-    // texte "Score" 
-    sf::Text score;
-    score.setFont(myFont);
-    score.setFillColor(sf::Color::White);
-    score.setStyle(sf::Text::Regular);
-    score.setString("Score");
-    score.setCharacterSize(25);
-    score.setPosition(545, 5);
-
-    // Score
-    sf::Text scoreCurrent;
-    scoreCurrent.setFont(myFont);
-    scoreCurrent.setFillColor(sf::Color::White);
-    scoreCurrent.setStyle(sf::Text::Regular);
-    scoreCurrent.setString("0");
-    scoreCurrent.setCharacterSize(25);
-    scoreCurrent.setPosition(645, 5);
-
-    // zone d'�criture du score
-    sf::RectangleShape scoreRectangle;
-    scoreRectangle.setSize(sf::Vector2f(100, 30));
-    scoreRectangle.setOutlineThickness(1);
-    scoreRectangle.setOutlineColor(sf::Color::White);
-    scoreRectangle.setFillColor(sf::Color::Black);
-    scoreRectangle.setPosition(640, 5);
-
-    // texte "Wave" 
-    sf::Text wave;
-    wave.setFont(myFont);
-    wave.setFillColor(sf::Color::White);
-    wave.setStyle(sf::Text::Regular);
-    wave.setString("Wave:");
-    wave.setCharacterSize(25);
-    wave.setPosition(10, 5);
-
-    // Wave
-    sf::Text waveCurrent;
-    waveCurrent.setFont(myFont);
-    waveCurrent.setFillColor(sf::Color::White);
-    waveCurrent.setStyle(sf::Text::Regular);
-    waveCurrent.setString("0");
-    waveCurrent.setCharacterSize(25);
-    waveCurrent.setPosition(115, 5);
-
-    // texte "GameOver" 
-    sf::Text gameOver;
-    gameOver.setFont(myFont);
-    gameOver.setFillColor(sf::Color::White);
-    gameOver.setStyle(sf::Text::Regular);
-    gameOver.setString("Gameover");
-    gameOver.setCharacterSize(56);
-    FloatRect gameOverBounds = gameOver.getGlobalBounds();
-    gameOver.setPosition(1280 * 0.5f - gameOverBounds.width * 0.5f, 720.0f * 0.5f - gameOverBounds.height * 0.5f);
-
-    sf::Text retryText;
-    retryText.setFont(myFont);
-    retryText.setFillColor(sf::Color::White);
-    retryText.setStyle(sf::Text::Regular);
-    retryText.setString("Press 'Enter' to Retry, or 'Esc' to Quit");
-    retryText.setCharacterSize(32);
-    FloatRect retryTextBounds = retryText.getGlobalBounds();
-    retryText.setPosition(1280 * 0.5f - retryTextBounds.width * 0.5f, 720.0f * 0.5f + gameOverBounds.height + retryTextBounds.height);
 
     Clock rootClock;
 
@@ -171,9 +102,9 @@ int main()
 
         // ===== Update ===== //
 
+        gui.Update(deltaTime);
         asteroidsSpawner.Update(deltaTime, asteroids);
         enemySpawner.Update(deltaTime, enemies);
-        waveCurrent.setString(to_string(asteroidsSpawner.GetDifficulty() + 1));
 
         spaceship.Update(deltaTime, bullets);
 
@@ -232,37 +163,10 @@ int main()
             }
         }
 
-
         // ===== Render =====
         window.clear(Color::Black);
 
-        // Convert score to string
-        std::stringstream s;
-        s << currentScore;
-        scoreCurrent.setString(s.str());
-
-        window.draw(wave);
-        window.draw(waveCurrent);
-
-        window.draw(score);
-        window.draw(scoreRectangle);
-        window.draw(scoreCurrent);
-
-        if (spaceship.life == 3)
-        {
-            lifepoint.Draw(window);
-            lifepoint2.Draw(window);
-            lifepoint3.Draw(window);
-        }
-        else if (spaceship.life == 2)
-        {
-            lifepoint.Draw(window);
-            lifepoint2.Draw(window);
-        }
-        else if (spaceship.life == 1)
-        {
-            lifepoint.Draw(window);
-        }
+        gui.DrawBackground(window, asteroidsSpawner.GetDifficulty() + 1, currentScore, spaceship.life);
 
         spaceship.Draw(window);
 
@@ -294,11 +198,7 @@ int main()
             }
         }
 
-        if (spaceship.life <= 0)
-        {
-            window.draw(gameOver);
-            window.draw(retryText);
-        }
+        gui.DrawForeground(window, (spaceship.life <= 0));
 
         window.display();
     }
