@@ -8,6 +8,19 @@ Gui::Gui()
     , lifepoint2(Vector2f(800.0f, 5.0f))
     , lifepoint3(Vector2f(850.0f, 5.0f))
 {
+
+    songTexture.loadFromFile("../../Assets/texture/song_GUI.png");
+
+    songOn.setTexture(songTexture);
+    songOn.setTextureRect(IntRect(512, 0, 512, 512));
+    songOn.setScale(35.0f / 512.0f, 35.0f / 512.0f);
+    songOn.setPosition(1280.0f - 35.0f, 0.0f);
+
+    songOff.setTexture(songTexture);
+    songOff.setTextureRect(IntRect(0, 0, 512, 512));
+    songOff.setScale(35.0f / 512.0f, 35.0f / 512.0f);
+    songOff.setPosition(1280.0f - 35.0f, 0.0f);
+
     // UI - Score
 	if (myFont.loadFromFile("../../Assets/font/StarJout.ttf") == false)
     {
@@ -71,6 +84,17 @@ Gui::Gui()
     retryText.setPosition(1280 * 0.5f - retryTextBounds.width * 0.5f, 720.0f * 0.5f + gameOverBounds.height + retryTextBounds.height);
 }
 
+void Gui::ProcessEvent(const Event& event)
+{
+    if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Button::Left)
+    {
+        if (songOff.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y) == true)
+        {
+            mute = !mute;
+        }
+    }        
+}
+
 void Gui::Update(float deltatime)
 {
 
@@ -103,6 +127,15 @@ void Gui::DrawBackground(RenderWindow& renderWindow, int currentWave, int curren
     {
         lifepoint.Draw(renderWindow);
     }
+
+    if (mute == true)
+    {
+        renderWindow.draw(songOff);
+    }
+    else
+    {
+        renderWindow.draw(songOn);
+    }
 }
 
 void Gui::DrawForeground(RenderWindow& renderWindow, bool gameover)
@@ -112,4 +145,9 @@ void Gui::DrawForeground(RenderWindow& renderWindow, bool gameover)
         renderWindow.draw(gameOver);
         renderWindow.draw(retryText);
     }
+}
+
+bool Gui::IsMute() const
+{
+    return mute;
 }

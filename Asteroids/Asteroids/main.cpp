@@ -98,6 +98,15 @@ int main()
             }
 
             spaceship.ProcessEvent(event);
+            gui.ProcessEvent(event);
+            if (gui.IsMute() == true)
+            {
+                music.pause();
+            }
+            else if (music.getStatus() != Music::Status::Playing)
+            {
+                music.play();
+            }
         }
 
         // ===== Update ===== //
