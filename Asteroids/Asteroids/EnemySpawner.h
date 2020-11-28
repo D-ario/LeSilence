@@ -18,6 +18,8 @@ public:
 
 	EnemySpawner();
 	void Update(float deltaTime, std::vector<Enemy>& enemies);
+	void StartWave(int difficulty);
+	bool HasFinished() const;
 
 private:
 

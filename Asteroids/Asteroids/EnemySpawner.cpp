@@ -9,6 +9,7 @@
 using namespace std;
 using namespace sf;
 
+// [Enemies count],[seconds]
 EnemySpawner::SpawnInfo EnemySpawner::dificultySpawnerEnemies[] = {
 	{1, 3.0f},
 	{2, 4.0f},
@@ -25,18 +26,6 @@ EnemySpawner::SpawnInfo EnemySpawner::dificultySpawnerEnemies[] = {
 
 EnemySpawner::EnemySpawner()
 {
-	totalTime = 0;
-	dificultyIndex = 0;
-	enemiesSpawned = 0;
-
-	SpawnInfo spawnInfo = dificultySpawnerEnemies[dificultyIndex];
-
-	nextSpawnTimeRemaining = 2.0f;
-	if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
-	{
-		nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
-	}
-	cout << "Prochain enemy dans " << nextSpawnTimeRemaining << " secondes" << endl;
 }
 
 void EnemySpawner::Update(float deltaTime, vector<Enemy>& enemies)
@@ -104,16 +93,25 @@ void EnemySpawner::Update(float deltaTime, vector<Enemy>& enemies)
 			}
 		}
 	}
-	else if (enemies.empty())
+}
+
+void EnemySpawner::StartWave(int difficulty)
+{
+	dificultyIndex = difficulty;
+	totalTime = 0;
+	enemiesSpawned = 0;
+	nextSpawnTimeRemaining = 2.0f;
+
+	SpawnInfo spawnInfo = dificultySpawnerEnemies[dificultyIndex];
+
+	if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
 	{
-		dificultyIndex++;
-		totalTime = 0;
-		enemiesSpawned = 0;
-		nextSpawnTimeRemaining = 2.0f;
-		if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
-		{
-			nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
-		}
-		cout << "Prochain enemy dans " << nextSpawnTimeRemaining << " secondes" << endl;
+		nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
 	}
+	cout << "Prochain spawn dans " << nextSpawnTimeRemaining << " secondes" << endl;
+}
+
+bool EnemySpawner::HasFinished() const
+{
+	return (enemiesSpawned >= dificultySpawnerEnemies[dificultyIndex].enemiesCount);
 }

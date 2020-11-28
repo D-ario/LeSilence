@@ -9,6 +9,7 @@
 using namespace std;
 using namespace sf;
 
+// [Asteroid count],[seconds]
 AsteroidsSpawner::SpawnInfo AsteroidsSpawner::dificultySpawnerAsteroids[] = {
 	{3, 3.0f},
 	{5, 4.0f},
@@ -25,18 +26,6 @@ AsteroidsSpawner::SpawnInfo AsteroidsSpawner::dificultySpawnerAsteroids[] = {
 
 AsteroidsSpawner::AsteroidsSpawner()
 {
-	totalTime = 0;
-	dificultyIndex = 0;
-	asteroidSpawned = 0;
-
-	SpawnInfo spawnInfo = dificultySpawnerAsteroids[dificultyIndex];
-
-	nextSpawnTimeRemaining = 2.0f;
-	if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
-	{
-		nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
-	}
-	cout << "Prochain spawn dans " << nextSpawnTimeRemaining << " secondes" << endl;
 }
 
 void AsteroidsSpawner::Update(float deltaTime, vector<Asteroid>& asteroids)
@@ -103,21 +92,25 @@ void AsteroidsSpawner::Update(float deltaTime, vector<Asteroid>& asteroids)
 			}
 		}
 	}
-	else if (asteroids.empty())
-	{
-		dificultyIndex++;
-		totalTime = 0;
-		asteroidSpawned = 0;
-		nextSpawnTimeRemaining = 2.0f;
-		if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
-		{
-			nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
-		}
-		cout << "Prochain spawn dans " << nextSpawnTimeRemaining << " secondes" << endl;
-	}
 }
 
-int AsteroidsSpawner::GetDifficulty() const
+void AsteroidsSpawner::StartWave(int difficulty)
 {
-	return dificultyIndex;
+	dificultyIndex = difficulty;
+	totalTime = 0;
+	asteroidSpawned = 0;
+	nextSpawnTimeRemaining = 2.0f;
+
+	SpawnInfo spawnInfo = dificultySpawnerAsteroids[dificultyIndex];
+
+	if (totalTime + nextSpawnTimeRemaining > spawnInfo.spawnDuration)
+	{
+		nextSpawnTimeRemaining = spawnInfo.spawnDuration - totalTime;
+	}
+	cout << "Prochain spawn dans " << nextSpawnTimeRemaining << " secondes" << endl;
+}
+
+bool AsteroidsSpawner::HasFinished() const
+{
+	return (asteroidSpawned >= dificultySpawnerAsteroids[dificultyIndex].asteroidCount);
 }

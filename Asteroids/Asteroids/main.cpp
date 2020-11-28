@@ -48,6 +48,10 @@ int main()
     AsteroidsSpawner asteroidsSpawner;
     EnemySpawner enemySpawner;
 
+    int currentWave = 0;
+    asteroidsSpawner.StartWave(currentWave);
+    enemySpawner.StartWave(currentWave);
+
     Gui gui;
 
     int currentScore = 0;
@@ -89,6 +93,9 @@ int main()
                         bullets.clear();
                         asteroids.clear();
                         enemies.clear();
+                        currentWave = 0;
+                        asteroidsSpawner.StartWave(currentWave);
+                        enemySpawner.StartWave(currentWave);
                     }
                     else if (event.key.code == Keyboard::Key::Escape) // Quit
                     {
@@ -114,6 +121,12 @@ int main()
         gui.Update(deltaTime);
         asteroidsSpawner.Update(deltaTime, asteroids);
         enemySpawner.Update(deltaTime, enemies);
+        if (asteroidsSpawner.HasFinished() == true && asteroids.empty() == true && enemySpawner.HasFinished() == true && enemies.empty() == true)
+        {
+            currentWave++;
+            asteroidsSpawner.StartWave(currentWave);
+            enemySpawner.StartWave(currentWave);
+        }
 
         spaceship.Update(deltaTime, bullets);
 
@@ -175,7 +188,7 @@ int main()
         // ===== Render =====
         window.clear(Color::Black);
 
-        gui.DrawBackground(window, asteroidsSpawner.GetDifficulty() + 1, currentScore, spaceship.life);
+        gui.DrawBackground(window, currentWave + 1, currentScore, spaceship.life);
 
         spaceship.Draw(window);
 

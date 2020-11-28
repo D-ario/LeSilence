@@ -18,7 +18,8 @@ public:
 
 	AsteroidsSpawner();
 	void Update(float deltaTime, std::vector<Asteroid>& asteroids);
-	int GetDifficulty() const;
+	void StartWave(int difficulty);
+	bool HasFinished() const;
 
 private:
 
